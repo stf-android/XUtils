@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import com.allens.library.Screen.Screen;
 import com.allens.library.Screen.ScreenUtils;
 import com.allens.library.SetAndGet.GetUtil;
+import com.allens.library.SetAndGet.SetUtil;
 import com.allens.library.Utils.ActivityContainer;
 import com.allens.library.Utils.CrashHandler;
 import com.allens.library.Utils.LocationUtil;
@@ -503,8 +504,19 @@ public class XUtils {
      * @创建日期 ：2017/6/13 下午9:27
      * @方法作用： 6.0 权限
      */
-    public void setSixPermission(Activity activity) {
+    public XUtils setSixPermission(Activity activity) {
         Permission.newIntance(activity).initISSix();
+        return this;
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/14 上午9:47
+     * @方法作用： 设置竖屏
+     */
+    public XUtils setActivityInfo(Activity activity) {
+        SetUtil.create().setActivityInfo(activity);
+        return this;
     }
 }
 

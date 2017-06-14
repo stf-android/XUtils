@@ -29,7 +29,7 @@ public class SetUtil {
      * @创建日期 ：2017/6/2 上午11:47
      * @方法作用： 设置竖屏
      */
-    private void setActivityInfo(Activity activity) {
+    public void setActivityInfo(Activity activity) {
         if (activity.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
