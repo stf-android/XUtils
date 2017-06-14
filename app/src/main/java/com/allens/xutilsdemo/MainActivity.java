@@ -13,5 +13,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         XUtils.create().setSixPermission(this)//设置6.0 需要的基本权限
                 .setActivityInfo(this);//设置竖屏
+
+
     }
 }
