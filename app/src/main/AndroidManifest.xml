@@ -25,6 +25,7 @@
         </activity>
 
         <activity android:name=".Activity.GlideAct" />
+        <activity android:name=".Activity.TabViewAct"/>
     </application>
 
 </manifest>

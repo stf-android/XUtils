@@ -8,6 +8,7 @@ import android.widget.Button;
 import com.allens.library.RxBinding.OnRxBind;
 import com.allens.library.XUtils;
 import com.allens.xutilsdemo.Activity.GlideAct;
+import com.allens.xutilsdemo.Activity.TabViewAct;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.activity_Glide)
     Button activityGlide;
+    @BindView(R.id.activity_Tab)
+    Button activityTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +29,18 @@ public class MainActivity extends AppCompatActivity {
                 .setActivityInfo(this);//设置竖屏
 
 
-        XUtils.create().click(activityGlide, new OnRxBind.OnRxBindingListener() {
-            @Override
-            public void OnClickListener() {
-                startActivity(new Intent(MainActivity.this, GlideAct.class));
-            }
-        });
+        XUtils.create()
+                .click(activityGlide, new OnRxBind.OnRxBindingListener() {
+                    @Override
+                    public void OnClickListener() {
+                        startActivity(new Intent(MainActivity.this, GlideAct.class));
+                    }
+                })
+                .click(activityTab, new OnRxBind.OnRxBindingListener() {
+                    @Override
+                    public void OnClickListener() {
+                        startActivity(new Intent(MainActivity.this, TabViewAct.class));
+                    }
+                });
     }
 }

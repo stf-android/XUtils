@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -152,7 +153,7 @@ public class XUtils {
 
     //设置动态GIF加载方式
     public <T> XUtils loadImageViewDynamicGif(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView) {
-        GlideUtil.create().loadImageViewDynamicGif(mContext, path, mImageView,loadingImage,errorImageView);
+        GlideUtil.create().loadImageViewDynamicGif(mContext, path, mImageView, loadingImage, errorImageView);
         return this;
     }
 
@@ -383,6 +384,12 @@ public class XUtils {
     //viewpager 切换碎片
     public XUtils tabControl(RadioGroup radioGroup, ViewPager viewPager, FragmentManager manager, List<Fragment> fragmentList) {
         new RadioGroupToViewPagerUtils().showRadioToViewPager(radioGroup, viewPager, manager, fragmentList);
+        return this;
+    }
+
+    //viewpager 切换碎片
+    public XUtils tabControl(TabLayout mTabLayout, ViewPager viewPager, FragmentManager manager, String mTitleList[], List<Fragment> mFragmentList) {
+        new RadioGroupToViewPagerUtils().showTabView(mTabLayout, viewPager, manager, mTitleList, mFragmentList);
         return this;
     }
 

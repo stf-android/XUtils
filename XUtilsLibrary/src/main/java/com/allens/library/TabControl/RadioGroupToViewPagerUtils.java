@@ -1,5 +1,6 @@
 package com.allens.library.TabControl;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,7 +25,17 @@ public class RadioGroupToViewPagerUtils {
     private ViewPager mViewPager;
     private List<View> mViewList;
 
-
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/14 下午1:35
+     * @方法作用： tablayout view
+     */
+    public void showTabView(TabLayout mTabLayout, ViewPager viewPager, FragmentManager manager, String mTitleList[], List<Fragment> mFragmentList) {
+        MyAdapter adapter = new MyAdapter(manager, mFragmentList, mTitleList);
+        viewPager.setAdapter(adapter);
+        //绑定
+        mTabLayout.setupWithViewPager(viewPager);
+    }
 
     /**
      * 作用：传入的是pageradapter
@@ -97,7 +108,7 @@ public class RadioGroupToViewPagerUtils {
      * name: Allens
      * created at 2016/9/20 12:29
      */
-    public class MyPagerAdapter extends PagerAdapter {
+    private class MyPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -123,9 +134,9 @@ public class RadioGroupToViewPagerUtils {
         }
     }
 
-    public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+    private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        public MyFragmentPagerAdapter(FragmentManager fm) {
+        private MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -137,6 +148,35 @@ public class RadioGroupToViewPagerUtils {
         @Override
         public int getCount() {
             return mFragmentList.size();
+        }
+    }
+
+    class MyAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> list;
+
+        private String mTitleList[];
+
+        public MyAdapter(FragmentManager fm, List<Fragment> list, String mTitleList[]) {
+            super(fm);
+            this.list = list;
+            this.mTitleList = mTitleList;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        //重写这个方法，将设置每个Tab的标题
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitleList[position];
         }
     }
 
