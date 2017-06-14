@@ -151,8 +151,8 @@ public class XUtils {
     }
 
     //设置动态GIF加载方式
-    public <T> XUtils loadImageViewDynamicGif(Context mContext, T path, ImageView mImageView) {
-        GlideUtil.create().loadImageViewDynamicGif(mContext, path, mImageView);
+    public <T> XUtils loadImageViewDynamicGif(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView) {
+        GlideUtil.create().loadImageViewDynamicGif(mContext, path, mImageView,loadingImage,errorImageView);
         return this;
     }
 

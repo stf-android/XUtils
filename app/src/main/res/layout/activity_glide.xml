@@ -5,5 +5,30 @@
     android:orientation="vertical">
 
 
+    <Button
+        android:id="@+id/activity_Glide_btn1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Glide圆形图片" />
+
+    <Button
+        android:id="@+id/activity_Glide_btn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Glide圆角图片" />
+
+    <Button
+        android:id="@+id/activity_Glide_btn3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Glide gif" />
+
+
+    <ImageView
+        android:id="@+id/activity_Glide_Img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
 
 </LinearLayout>

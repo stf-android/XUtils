@@ -174,8 +174,13 @@ public class GlideUtil {
     }
 
     //设置动态GIF加载方式
-    public <T> void loadImageViewDynamicGif(Context mContext, T path, ImageView mImageView) {
-        Glide.with(mContext).load(path).asGif().into(mImageView);
+    public <T> void loadImageViewDynamicGif(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView) {
+        Glide.with(mContext)
+                .load(path)
+                .asGif()
+                .placeholder(loadingImage)
+                .error(errorImageView)
+                .into(mImageView);
     }
 
     //设置静态GIF加载方式
