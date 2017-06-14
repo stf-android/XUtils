@@ -30,9 +30,6 @@
 
 
 	dependencies {
-	        compile 'com.github.JiangHaiYang01:XUtilsDemo:0.1'
+	        compile 'com.github.JiangHaiYang01:XUtils:0.1'
 	}
-	```
-	
-	
 	
