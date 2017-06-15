@@ -32,29 +32,29 @@ public class FileLengthShareUtil {
     private String startIndex = "startIndex";
     private String length = "length";
 
-    public long getStartIndex() {
-        return getSharedPreferences().getLong(startIndex, -1);
+    public long getStartIndex(String key) {
+        return getSharedPreferences().getLong(key + startIndex, -1);
     }
 
-    public void clearStartIndex() {
-        getSharedPreferences().edit().remove(startIndex).apply();
+    public void clearStartIndex(String key) {
+        getSharedPreferences().edit().remove(key + startIndex).apply();
     }
 
-    public void putStartIndex(long Index) {
-        getSharedPreferences().edit().putLong(startIndex, Index).apply();
+    public void putStartIndex(String key, long Index) {
+        getSharedPreferences().edit().putLong(key + startIndex, Index).apply();
     }
 
 
-    public long getLength() {
-        return getSharedPreferences().getLong(length, -1);
+    public long getLength(String key) {
+        return getSharedPreferences().getLong(key + length, -1);
     }
 
-    public void clearLength() {
-        getSharedPreferences().edit().remove(length).apply();
+    public void clearLength(String key) {
+        getSharedPreferences().edit().remove(key + length).apply();
     }
 
-    public void putLength(long Index) {
-        getSharedPreferences().edit().putLong(length, Index).apply();
+    public void putLength(String key, long Index) {
+        getSharedPreferences().edit().putLong(key + length, Index).apply();
     }
 
 }

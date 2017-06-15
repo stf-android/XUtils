@@ -48,8 +48,8 @@ public class DownLoadUtil {
     public void download(Context context, final String downLoadUrl, final String filePath, final boolean isAPK, final OnRetrofit.OnDownLoadListener listener) {
         this.isStop = false;
         this.context = context;
-        long startIndex = FileLengthShareUtil.getInstance(context).getStartIndex();//获取我们保存在  share里面的  开始位置
-        FileLength = FileLengthShareUtil.getInstance(context).getLength();// 获取  文件的大小
+        long startIndex = FileLengthShareUtil.getInstance(context).getStartIndex(downLoadUrl);//获取我们保存在  share里面的  开始位置
+        FileLength = FileLengthShareUtil.getInstance(context).getLength(downLoadUrl);// 获取  文件的大小
         if (startIndex == -1) {
             currentLength = 0;
         } else {
@@ -84,7 +84,7 @@ public class DownLoadUtil {
                 });
     }
 
-    private void FileDownLoad(String downLoadUrl, ResponseBody response, String filePath, final boolean isAPK, final OnRetrofit.OnDownLoadListener listener) {
+    private void FileDownLoad(final String downLoadUrl, ResponseBody response, String filePath, final boolean isAPK, final OnRetrofit.OnDownLoadListener listener) {
         String sdStatus = Environment.getExternalStorageState();
         if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
             return;
@@ -120,8 +120,8 @@ public class DownLoadUtil {
                         }
 
                         if (baiFenBi == 100) {
-                            FileLengthShareUtil.getInstance(context).clearLength();
-                            FileLengthShareUtil.getInstance(context).clearStartIndex();
+                            FileLengthShareUtil.getInstance(context).clearLength(downLoadUrl);
+                            FileLengthShareUtil.getInstance(context).clearStartIndex(downLoadUrl);
                             if (isAPK)
                                 isAPK(file_path);
                         }
@@ -129,10 +129,10 @@ public class DownLoadUtil {
                 });
 
                 if (isStop) {// 停止的时候  将长度保存
-                    FileLengthShareUtil.getInstance(context).putStartIndex(currentLength);
-                    long length = FileLengthShareUtil.getInstance(context).getLength();
+                    FileLengthShareUtil.getInstance(context).putStartIndex(downLoadUrl,currentLength);
+                    long length = FileLengthShareUtil.getInstance(context).getLength(downLoadUrl);
                     if (length == -1)// 说明是第一次  就将文件的大小保存
-                        FileLengthShareUtil.getInstance(context).putLength(response.contentLength());
+                        FileLengthShareUtil.getInstance(context).putLength(downLoadUrl,response.contentLength());
                     break;
                 }
             }

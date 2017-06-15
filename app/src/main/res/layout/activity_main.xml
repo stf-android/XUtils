@@ -17,5 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TAB  VIEWPAGER" />
+    <Button
+        android:id="@+id/activity_Retrofit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retrofit" />
 
 </LinearLayout>  
