@@ -1,17 +1,17 @@
 package com.allens.library.Retrofit;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.net.URL;
 
 import io.reactivex.Observer;
@@ -25,16 +25,12 @@ import okhttp3.ResponseBody;
  */
 
 public class DownLoadUtil {
-    private FileOutputStream fos;
     private BufferedInputStream bis;
-    private InputStream inputStream;
     private Handler handler = new Handler();
-    private boolean isStop = false;
     private Context context;
-    private long currentLength;
     private static DownLoadUtil mInstance;
-    private long FileLength;
-    private int baiFenBi;
+    private DownLoadInfo downLoadInfo;
+    private Long startLong;
 
     public static DownLoadUtil getInstance() {
         if (mInstance == null) {
@@ -45,20 +41,19 @@ public class DownLoadUtil {
         return mInstance;
     }
 
-    public void download(Context context, final String downLoadUrl, final String filePath, final boolean isAPK, final OnRetrofit.OnDownLoadListener listener) {
-        this.isStop = false;
+    public void download(Context context, final String downLoadUrl, final String filePath, final OnRetrofit.OnDownLoadListener listener) {
         this.context = context;
-        long startIndex = FileLengthShareUtil.getInstance(context).getStartIndex(downLoadUrl);//获取我们保存在  share里面的  开始位置
-        FileLength = FileLengthShareUtil.getInstance(context).getLength(downLoadUrl);// 获取  文件的大小
-        if (startIndex == -1) {
-            currentLength = 0;
-        } else {
-            currentLength = startIndex;
+        if (downLoadInfo == null) {
+            downLoadInfo = new DownLoadInfo();
+            downLoadInfo.setLength((long) 0);
+            downLoadInfo.setStartLong((long) 0);
+            downLoadInfo.setStop(false);
         }
+        downLoadInfo.setUrl(downLoadUrl);
         RetrofitUtil.getInstance()
                 .build("http://allens/")
                 .getService(ApiService.class)
-                .downloadFile("bytes=" + startIndex + "-" + FileLength, downLoadUrl)
+                .downloadFile("bytes=" + downLoadInfo.getStartLong() + "-" + downLoadInfo.getLength(), downLoadUrl)
                 .subscribeOn(Schedulers.io())//在子线程取数据
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<ResponseBody>() {
@@ -69,7 +64,8 @@ public class DownLoadUtil {
 
                     @Override
                     public void onNext(@NonNull ResponseBody response) {
-                        FileDownLoad(downLoadUrl, response, filePath, isAPK, listener);
+                        Logger.i("获取需要下载的信息----》" + response.contentLength());
+                        initDown(downLoadUrl, response, filePath, listener);
                     }
 
                     @Override
@@ -84,7 +80,7 @@ public class DownLoadUtil {
                 });
     }
 
-    private void FileDownLoad(final String downLoadUrl, ResponseBody response, String filePath, final boolean isAPK, final OnRetrofit.OnDownLoadListener listener) {
+    private void initDown(final String downLoadUrl, ResponseBody response, String filePath, final OnRetrofit.OnDownLoadListener listener) {
         String sdStatus = Environment.getExternalStorageState();
         if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
             return;
@@ -94,47 +90,48 @@ public class DownLoadUtil {
         if (!file.exists()) {
             file.mkdirs();
         }
-        inputStream = response.byteStream();
+        InputStream inputStream = response.byteStream();
         try {
             bis = new BufferedInputStream(inputStream);
             final String file_path = path + getFileName(new URL(downLoadUrl));
-            fos = new FileOutputStream(file_path);
+            RandomAccessFile raf = new RandomAccessFile(file_path, "rw");
             byte[] buffer = new byte[1024 * 8];//创建一个缓冲的字节数组
             int len;//用于保存read的返回值
+            startLong = downLoadInfo.getStartLong();
+            Logger.i("startLong---->" + startLong);
             while ((len = bis.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-                fos.flush();
-                currentLength += len;
-                if (FileLength == -1) {// 如果在SHARE 里面没有 保存 文件大小  说明是第一次点击下载  直接获取
-                    baiFenBi = (int) (((float) currentLength) / (response.contentLength()) * 100);
+                raf.write(buffer, 0, len);
+                startLong += len;
+                downLoadInfo.setStartLong(startLong);
+                Logger.i("length--->" + downLoadInfo.getLength());
+                if (downLoadInfo.getLength() == 0) {// 如果在SHARE 里面没有 保存 文件大小  说明是第一次点击下载  直接获取
+                    int baiFenBi = (int) (((float) startLong) / (response.contentLength()) * 100);
+                    downLoadInfo.setLength(response.contentLength());
+                    downLoadInfo.setBaiFen(baiFenBi);
+                    downLoadInfo.setStop(false);
                 } else {
-                    baiFenBi = (int) (((float) currentLength) / FileLength * 100);// 将保存的文件大小拿出来
+                    int baiFenBi = (int) (((float) startLong) / downLoadInfo.getLength() * 100);// 将保存的文件大小拿出来
+                    downLoadInfo.setBaiFen(baiFenBi);
                 }
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (isStop) {// 如果点击停止    返回  false
-                            listener.onSuccess(baiFenBi, false);
+                        if (downLoadInfo.isStop()) {// 如果点击停止    返回  false
+                            listener.onSuccess(downLoadInfo.getBaiFen(), false);
                         } else {
-                            listener.onSuccess(baiFenBi, true);
-                        }
-
-                        if (baiFenBi == 100) {
-                            FileLengthShareUtil.getInstance(context).clearLength(downLoadUrl);
-                            FileLengthShareUtil.getInstance(context).clearStartIndex(downLoadUrl);
-                            if (isAPK)
-                                isAPK(file_path);
+                            listener.onSuccess(downLoadInfo.getBaiFen(), true);
                         }
                     }
                 });
-
-                if (isStop) {// 停止的时候  将长度保存
-                    FileLengthShareUtil.getInstance(context).putStartIndex(downLoadUrl,currentLength);
-                    long length = FileLengthShareUtil.getInstance(context).getLength(downLoadUrl);
-                    if (length == -1)// 说明是第一次  就将文件的大小保存
-                        FileLengthShareUtil.getInstance(context).putLength(downLoadUrl,response.contentLength());
+                if (downLoadInfo.isStop()) {// 停止的时候  将长度保存
                     break;
                 }
+
+                break;
+            }
+            raf.close();
+            if (downLoadInfo.getBaiFen() == 100) {
+                downLoadInfo = null;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -142,7 +139,6 @@ public class DownLoadUtil {
             e.printStackTrace();
         } finally {
             try {
-                fos.close();
                 bis.close();
                 inputStream.close();
             } catch (IOException e) {
@@ -151,26 +147,27 @@ public class DownLoadUtil {
         }
     }
 
-    //判断是不是APK
-    private void isAPK(String file_path) {
-        File file = new File(file_path);
-        if (file.getName().endsWith(".apk")) {
-            Intent install = new Intent();
-            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            install.setAction(android.content.Intent.ACTION_VIEW);
-            install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-            context.startActivity(install);
-        }
-    }
-
+    //
+//    //判断是不是APK
+//    private void isAPK(String file_path) {
+//        File file = new File(file_path);
+//        if (file.getName().endsWith(".apk")) {
+//            Intent install = new Intent();
+//            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            install.setAction(android.content.Intent.ACTION_VIEW);
+//            install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+//            context.startActivity(install);
+//        }
+//    }
+//
     //获取下载文件的名称
     private String getFileName(URL url) {
         String filename = url.getFile();
         return filename.substring(filename.lastIndexOf("/") + 1);
     }
-
-    // 关闭下载
-    public void stop() {
-        this.isStop = true;
-    }
+//
+//    // 关闭下载
+//    public void stop(String downUrl) {
+//        stopMap.put(downUrl, true);
+//    }
 }

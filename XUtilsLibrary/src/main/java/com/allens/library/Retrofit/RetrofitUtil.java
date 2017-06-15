@@ -156,11 +156,11 @@ public class RetrofitUtil {
                 });
     }
 
-    public void retrofitDownLoad(Context context,final String downLoadUrl, final String filePath, boolean isAPK,final OnRetrofit.OnDownLoadListener listener) {
-        DownLoadUtil.getInstance().download(context,downLoadUrl, filePath,isAPK, listener);
+    public void retrofitDownLoad(Context context, final String downLoadUrl, final String filePath, final OnRetrofit.OnDownLoadListener listener) {
+        DownLoadUtil.getInstance().download(context, downLoadUrl, filePath, listener);
     }
 
-    public void stop() {
-        DownLoadUtil.getInstance().stop();
+    public void stop(String downUrl) {
+//        DownLoadUtil.getInstance().stop(downUrl);
     }
 }

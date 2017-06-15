@@ -274,19 +274,19 @@ public class XUtils {
 
     //下载
     public XUtils retrofitDown(Context context, String downLoadUrl, String filePath, OnRetrofit.OnDownLoadListener listener) {
-        RetrofitUtil.getInstance().retrofitDownLoad(context, downLoadUrl, filePath, false, listener);
+        RetrofitUtil.getInstance().retrofitDownLoad(context, downLoadUrl, filePath, listener);
         return this;
     }
 
     //下载
     public XUtils retrofitDownApk(Context context, String downLoadUrl, String filePath, OnRetrofit.OnDownLoadListener listener) {
-        RetrofitUtil.getInstance().retrofitDownLoad(context, downLoadUrl, filePath, true, listener);
+//        RetrofitUtil.getInstance().retrofitDownLoad(context, downLoadUrl, filePath, listener);
         return this;
     }
 
     //暂停
-    public void retrofitStop() {
-        RetrofitUtil.getInstance().stop();
+    public void retrofitStop(String downUrl) {
+        RetrofitUtil.getInstance().stop(downUrl);
     }
 
     public XUtils seReadTimeout(int readTimeout) {

@@ -112,7 +112,7 @@ public class RetrofitAct extends AppCompatActivity {
                 });
                 break;
             case R.id.activity_down_stop:
-                XUtils.create().retrofitStop();
+                XUtils.create().retrofitStop(downUrl);
                 break;
             case R.id.activity_downapk:
                 XUtils.create().retrofitDownApk(RetrofitAct.this, downApkUrl, FilePath, new OnRetrofit.OnDownLoadListener() {
