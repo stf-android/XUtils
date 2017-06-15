@@ -98,7 +98,7 @@ public class RetrofitAct extends AppCompatActivity {
                 });
                 break;
             case R.id.activity_down:
-                XUtils.create().retrofitDown(RetrofitAct.this, downUrl, FilePath, new OnRetrofit.OnDownLoadListener() {
+                XUtils.create().retrofitDown(RetrofitAct.this, downApkUrl, FilePath, new OnRetrofit.OnDownLoadListener() {
                     @Override
                     public void onSuccess(int count, boolean isStart) {
                         activityProgressDown.setProgress(count);

@@ -161,6 +161,6 @@ public class RetrofitUtil {
     }
 
     public void stop(String downUrl) {
-//        DownLoadUtil.getInstance().stop(downUrl);
+        DownLoadUtil.getInstance().stop(downUrl);
     }
 }

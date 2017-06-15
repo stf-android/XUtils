@@ -3,6 +3,7 @@ package com.allens.library.Retrofit;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import com.orhanobut.logger.Logger;
 
@@ -45,11 +46,12 @@ public class DownLoadUtil {
         this.context = context;
         if (downLoadInfo == null) {
             downLoadInfo = new DownLoadInfo();
-            downLoadInfo.setLength((long) 0);
+            downLoadInfo.setLength(Long.valueOf(-1));
             downLoadInfo.setStartLong((long) 0);
-            downLoadInfo.setStop(false);
+            downLoadInfo.setUrl(downLoadUrl);
         }
-        downLoadInfo.setUrl(downLoadUrl);
+        downLoadInfo.setStop(false);
+//        Logger.i("start---->" + downLoadInfo.getStartLong() + "    length---->" + downLoadInfo.getLength());
         RetrofitUtil.getInstance()
                 .build("http://allens/")
                 .getService(ApiService.class)
@@ -64,7 +66,7 @@ public class DownLoadUtil {
 
                     @Override
                     public void onNext(@NonNull ResponseBody response) {
-                        Logger.i("获取需要下载的信息----》" + response.contentLength());
+//                        Logger.i("获取需要下载的信息----》" + response.contentLength());
                         initDown(downLoadUrl, response, filePath, listener);
                     }
 
@@ -98,17 +100,17 @@ public class DownLoadUtil {
             byte[] buffer = new byte[1024 * 8];//创建一个缓冲的字节数组
             int len;//用于保存read的返回值
             startLong = downLoadInfo.getStartLong();
-            Logger.i("startLong---->" + startLong);
             while ((len = bis.read(buffer)) != -1) {
                 raf.write(buffer, 0, len);
                 startLong += len;
                 downLoadInfo.setStartLong(startLong);
-                Logger.i("length--->" + downLoadInfo.getLength());
-                if (downLoadInfo.getLength() == 0) {// 如果在SHARE 里面没有 保存 文件大小  说明是第一次点击下载  直接获取
+//                Logger.i("length--->" + downLoadInfo.getLength());
+                Logger.i("startLong---->" + startLong);
+                if (downLoadInfo.getLength() == -1) {// 如果在SHARE 里面没有 保存 文件大小  说明是第一次点击下载  直接获取
                     int baiFenBi = (int) (((float) startLong) / (response.contentLength()) * 100);
                     downLoadInfo.setLength(response.contentLength());
+//                    Logger.i("baifen---->" + baiFenBi);
                     downLoadInfo.setBaiFen(baiFenBi);
-                    downLoadInfo.setStop(false);
                 } else {
                     int baiFenBi = (int) (((float) startLong) / downLoadInfo.getLength() * 100);// 将保存的文件大小拿出来
                     downLoadInfo.setBaiFen(baiFenBi);
@@ -116,23 +118,19 @@ public class DownLoadUtil {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (downLoadInfo.isStop()) {// 如果点击停止    返回  false
-                            listener.onSuccess(downLoadInfo.getBaiFen(), false);
-                        } else {
-                            listener.onSuccess(downLoadInfo.getBaiFen(), true);
-                        }
+                        if (downLoadInfo != null)
+                            listener.onSuccess(downLoadInfo.getBaiFen(), downLoadInfo.isStop());
+                        else
+                            listener.onSuccess(100, false);
                     }
                 });
                 if (downLoadInfo.isStop()) {// 停止的时候  将长度保存
                     break;
                 }
-
-                break;
             }
-            raf.close();
-            if (downLoadInfo.getBaiFen() == 100) {
+            if (downLoadInfo.getBaiFen() == 100)
                 downLoadInfo = null;
-            }
+            raf.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -165,9 +163,11 @@ public class DownLoadUtil {
         String filename = url.getFile();
         return filename.substring(filename.lastIndexOf("/") + 1);
     }
-//
-//    // 关闭下载
-//    public void stop(String downUrl) {
-//        stopMap.put(downUrl, true);
-//    }
+
+    //
+    // 关闭下载
+    public void stop(String downUrl) {
+        if (downLoadInfo != null)
+            downLoadInfo.setStop(true);
+    }
 }
