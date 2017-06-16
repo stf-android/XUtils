@@ -399,21 +399,25 @@ public class XUtils {
      * @创建日期 ：2017/6/11 上午11:36
      * @方法作用： CrashHandler
      */
+    // 设置toast 弹出的时间  多久以后退出引用
     public XUtils setCrashHandlerTime(long time) {
         CrashHandler.getInstance().setDelayTime(time);
         return this;
     }
 
+    // log 的 TAG
     public XUtils setCrashHandlerTag(String tag) {
         CrashHandler.getInstance().setTAG(tag);
         return this;
     }
 
+    // 文件目录
     public XUtils setCrashHandlerPath(String path) {
         CrashHandler.getInstance().setPath(path);
         return this;
     }
 
+    // 初始化
     public XUtils startCrashHandler(Context context) {
         CrashHandler.getInstance().init(context);
         return this;
