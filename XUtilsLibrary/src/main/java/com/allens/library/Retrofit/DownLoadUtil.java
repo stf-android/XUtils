@@ -1,6 +1,8 @@
 package com.allens.library.Retrofit;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +20,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import io.reactivex.Observer;
@@ -58,8 +62,7 @@ public class DownLoadUtil {
             info.setStartLong((long) 0);
             info.setUrl(downLoadUrl);
         }
-        info.setStop(false);
-        Logger.i("start---->" + info.getStartLong() + "    length---->" + info.getLength());
+//        info.setStop(false);
         final DownLoadInfo finalInfo = info;
         RetrofitUtil.getInstance()
                 .build("http://allens/")
@@ -75,7 +78,19 @@ public class DownLoadUtil {
 
                     @Override
                     public void onNext(@NonNull final ResponseBody response) {
-                        initDown(downLoadUrl, response, filePath, finalInfo, listener);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Iterator<Map.Entry<String, DownLoadInfo>> iterator = hashMap.entrySet().iterator();
+                                while (iterator.hasNext()) {
+                                    Map.Entry entry = (Map.Entry) iterator.next();
+                                    String key = (String) entry.getKey();
+                                    hashMap.get(key).setStop(true);
+                                }
+                                hashMap.get(downLoadUrl).setStop(false);
+                                initDown(downLoadUrl, response, filePath, finalInfo, listener);
+                            }
+                        }).start();
                     }
 
                     @Override
@@ -133,8 +148,10 @@ public class DownLoadUtil {
                     break;
                 }
             }
-            if (finalInfo.getBaiFen() == 100)
+            if (finalInfo.getBaiFen() == 100) {
                 hashMap.remove(downLoadUrl);
+                isAPK(file_path);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -150,19 +167,19 @@ public class DownLoadUtil {
         }
     }
 
-    //
-//    //判断是不是APK
-//    private void isAPK(String file_path) {
-//        File file = new File(file_path);
-//        if (file.getName().endsWith(".apk")) {
-//            Intent install = new Intent();
-//            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            install.setAction(android.content.Intent.ACTION_VIEW);
-//            install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-//            context.startActivity(install);
-//        }
-//    }
-//
+
+    //判断是不是APK
+    private void isAPK(String file_path) {
+        File file = new File(file_path);
+        if (file.getName().endsWith(".apk")) {
+            Intent install = new Intent();
+            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            install.setAction(android.content.Intent.ACTION_VIEW);
+            install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+            context.startActivity(install);
+        }
+    }
+
     //获取下载文件的名称
     private String getFileName(URL url) {
         String filename = url.getFile();
