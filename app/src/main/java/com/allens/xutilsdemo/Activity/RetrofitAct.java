@@ -52,6 +52,9 @@ public class RetrofitAct extends AppCompatActivity {
 
     private String downUrl = "http://192.168.1.108/Download/01xl.mp4";
     private String downApkUrl = "http://releases.b0.upaiyun.com/hoolay.apk";
+    private String downApkUrl1 = "http://192.168.1.108/App/app-debug.apk";
+
+
 
     private String FilePath = "A_XUtils";
 
@@ -112,10 +115,10 @@ public class RetrofitAct extends AppCompatActivity {
                 });
                 break;
             case R.id.activity_down_stop:
-                XUtils.create().retrofitStop(downUrl);
+                XUtils.create().retrofitStop(downApkUrl);
                 break;
             case R.id.activity_downapk:
-                XUtils.create().retrofitDownApk(RetrofitAct.this, downApkUrl, FilePath, new OnRetrofit.OnDownLoadListener() {
+                XUtils.create().retrofitDown(RetrofitAct.this, downApkUrl1, FilePath, new OnRetrofit.OnDownLoadListener() {
                     @Override
                     public void onSuccess(int count, boolean isStart) {
                         activityRetrofitTextviewDownapk.setText(count + " %");
@@ -129,6 +132,7 @@ public class RetrofitAct extends AppCompatActivity {
                 });
                 break;
             case R.id.activity_downapk_stop:
+                XUtils.create().retrofitStop(downApkUrl1);
                 break;
         }
     }

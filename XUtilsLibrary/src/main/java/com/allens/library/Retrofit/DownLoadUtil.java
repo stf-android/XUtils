@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -30,8 +34,8 @@ public class DownLoadUtil {
     private Handler handler = new Handler();
     private Context context;
     private static DownLoadUtil mInstance;
-    private DownLoadInfo downLoadInfo;
     private Long startLong;
+    private HashMap<String, DownLoadInfo> hashMap = new HashMap<>();
 
     public static DownLoadUtil getInstance() {
         if (mInstance == null) {
@@ -44,18 +48,22 @@ public class DownLoadUtil {
 
     public void download(Context context, final String downLoadUrl, final String filePath, final OnRetrofit.OnDownLoadListener listener) {
         this.context = context;
-        if (downLoadInfo == null) {
-            downLoadInfo = new DownLoadInfo();
+        final DownLoadInfo info = hashMap.get(downLoadUrl);
+//        Logger.i("downLoadUrl---->" + downLoadUrl);
+//        Logger.i("info---->" + info);
+        if (info == null) {
+            DownLoadInfo downLoadInfo = new DownLoadInfo();
+            hashMap.put(downLoadUrl, downLoadInfo);
             downLoadInfo.setLength(Long.valueOf(-1));
             downLoadInfo.setStartLong((long) 0);
             downLoadInfo.setUrl(downLoadUrl);
         }
-        downLoadInfo.setStop(false);
+        hashMap.get(downLoadUrl).setStop(false);
 //        Logger.i("start---->" + downLoadInfo.getStartLong() + "    length---->" + downLoadInfo.getLength());
         RetrofitUtil.getInstance()
                 .build("http://allens/")
                 .getService(ApiService.class)
-                .downloadFile("bytes=" + downLoadInfo.getStartLong() + "-" + downLoadInfo.getLength(), downLoadUrl)
+                .downloadFile("bytes=" + hashMap.get(downLoadUrl).getStartLong() + "-" + hashMap.get(downLoadUrl).getLength(), downLoadUrl)
                 .subscribeOn(Schedulers.io())//在子线程取数据
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<ResponseBody>() {
@@ -65,8 +73,10 @@ public class DownLoadUtil {
                     }
 
                     @Override
-                    public void onNext(@NonNull ResponseBody response) {
-//                        Logger.i("获取需要下载的信息----》" + response.contentLength());
+                    public void onNext(@NonNull final ResponseBody response) {
+
+
+
                         initDown(downLoadUrl, response, filePath, listener);
                     }
 
@@ -99,37 +109,37 @@ public class DownLoadUtil {
             RandomAccessFile raf = new RandomAccessFile(file_path, "rw");
             byte[] buffer = new byte[1024 * 8];//创建一个缓冲的字节数组
             int len;//用于保存read的返回值
-            startLong = downLoadInfo.getStartLong();
+            startLong = hashMap.get(downLoadUrl).getStartLong();
             while ((len = bis.read(buffer)) != -1) {
                 raf.write(buffer, 0, len);
                 startLong += len;
-                downLoadInfo.setStartLong(startLong);
+                hashMap.get(downLoadUrl).setStartLong(startLong);
 //                Logger.i("length--->" + downLoadInfo.getLength());
-                Logger.i("startLong---->" + startLong);
-                if (downLoadInfo.getLength() == -1) {// 如果在SHARE 里面没有 保存 文件大小  说明是第一次点击下载  直接获取
+//                Logger.i("startLong---->" + startLong);
+                if (hashMap.get(downLoadUrl).getLength() == -1) {// 如果在SHARE 里面没有 保存 文件大小  说明是第一次点击下载  直接获取
                     int baiFenBi = (int) (((float) startLong) / (response.contentLength()) * 100);
-                    downLoadInfo.setLength(response.contentLength());
+                    hashMap.get(downLoadUrl).setLength(response.contentLength());
 //                    Logger.i("baifen---->" + baiFenBi);
-                    downLoadInfo.setBaiFen(baiFenBi);
+                    hashMap.get(downLoadUrl).setBaiFen(baiFenBi);
                 } else {
-                    int baiFenBi = (int) (((float) startLong) / downLoadInfo.getLength() * 100);// 将保存的文件大小拿出来
-                    downLoadInfo.setBaiFen(baiFenBi);
+                    int baiFenBi = (int) (((float) startLong) / hashMap.get(downLoadUrl).getLength() * 100);// 将保存的文件大小拿出来
+                    hashMap.get(downLoadUrl).setBaiFen(baiFenBi);
                 }
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (downLoadInfo != null)
-                            listener.onSuccess(downLoadInfo.getBaiFen(), downLoadInfo.isStop());
+                        if (hashMap.get(downLoadUrl) != null)
+                            listener.onSuccess(hashMap.get(downLoadUrl).getBaiFen(), hashMap.get(downLoadUrl).isStop());
                         else
                             listener.onSuccess(100, false);
                     }
                 });
-                if (downLoadInfo.isStop()) {// 停止的时候  将长度保存
+                if (hashMap.get(downLoadUrl).isStop()) {// 停止
                     break;
                 }
             }
-            if (downLoadInfo.getBaiFen() == 100)
-                downLoadInfo = null;
+            if (hashMap.get(downLoadUrl).getBaiFen() == 100)
+                hashMap.remove(downLoadUrl);
             raf.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -167,7 +177,10 @@ public class DownLoadUtil {
     //
     // 关闭下载
     public void stop(String downUrl) {
-        if (downLoadInfo != null)
+        Logger.i("hashMap---->" + hashMap);
+        DownLoadInfo downLoadInfo = hashMap.get(downUrl);
+        if (downLoadInfo != null) {
             downLoadInfo.setStop(true);
+        }
     }
 }
