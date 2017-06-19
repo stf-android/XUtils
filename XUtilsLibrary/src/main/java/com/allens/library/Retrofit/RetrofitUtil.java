@@ -157,11 +157,10 @@ public class RetrofitUtil {
     }
 
     public void retrofitDownLoad(Context context, final String downLoadUrl, final String filePath, final OnRetrofit.OnDownLoadListener listener) {
-        DownLoadUtil.getInstance().download(context, downLoadUrl, filePath, listener);
+        DownLoadUtils.getInstance(context).downLoad(downLoadUrl, filePath, listener);
     }
 
-    public void stop(String downUrl) {
-        DownLoadUtil.getInstance().stop(downUrl);
+    public void stop(Context context, String downUrl) {
+        DownLoadUtils.getInstance(context).stop(downUrl);
     }
-
 }

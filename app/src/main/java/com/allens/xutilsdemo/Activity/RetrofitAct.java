@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.allens.library.Retrofit.DownLoadUtils;
 import com.allens.library.Retrofit.OnRetrofit;
 import com.allens.library.XUtils;
 import com.allens.xutilsdemo.R;
@@ -53,7 +54,7 @@ public class RetrofitAct extends AppCompatActivity {
     private String downUrl = "http://192.168.1.108/Download/01xl.mp4";
     private String downApkUrl = "http://releases.b0.upaiyun.com/hoolay.apk";
     private String downApkUrl1 = "http://192.168.1.108/App/app-debug.apk";
-
+    private String imgUrl = "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=343974559,780603549&fm=26&gp=0.jpg";
 
 
     private String FilePath = "A_XUtils";
@@ -101,11 +102,11 @@ public class RetrofitAct extends AppCompatActivity {
                 });
                 break;
             case R.id.activity_down:
-                XUtils.create().retrofitDown(RetrofitAct.this, downUrl, FilePath, new OnRetrofit.OnDownLoadListener() {
+                XUtils.create().retrofitDown(this, downApkUrl, "aaa", new OnRetrofit.OnDownLoadListener() {
                     @Override
-                    public void onSuccess(int count, boolean isStart) {
+                    public void onSuccess(int count, int State) {
                         activityProgressDown.setProgress(count);
-                        activityRetrofitTextviewDown.setText(count + " %");
+                        activityRetrofitTextviewDown.setText(count + "");
                     }
 
                     @Override
@@ -115,24 +116,11 @@ public class RetrofitAct extends AppCompatActivity {
                 });
                 break;
             case R.id.activity_down_stop:
-                XUtils.create().retrofitStop(downUrl);
+                XUtils.create().retrofitStop(this, downApkUrl);
                 break;
             case R.id.activity_downapk:
-                XUtils.create().retrofitDown(RetrofitAct.this, downApkUrl1, FilePath, new OnRetrofit.OnDownLoadListener() {
-                    @Override
-                    public void onSuccess(int count, boolean isStart) {
-                        activityRetrofitTextviewDownapk.setText(count + " %");
-                        activityProgressDownapk.setProgress(count);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
                 break;
             case R.id.activity_downapk_stop:
-                XUtils.create().retrofitStop(downApkUrl1);
                 break;
         }
     }

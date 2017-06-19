@@ -18,4 +18,9 @@ public class XConfig {
     public static int DiskCacheStrategy_RESULT = 3;
 
 
+    public static int DWONLOAD_START = 1;
+    public static int DWONLOAD_STOP = 2;
+    public static int DWONLOAD_FINSH = 3;
+
+
 }

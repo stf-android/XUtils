@@ -26,7 +26,7 @@ public interface OnRetrofit<T> {
 
     interface OnDownLoadListener {
 
-        void onSuccess(int count, boolean isStart);
+        void onSuccess(int count, int State);
 
         void onError(Throwable e);
     }

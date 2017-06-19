@@ -278,15 +278,9 @@ public class XUtils {
         return this;
     }
 
-//    //下载
-//    public XUtils retrofitDownApk(Context context, String downLoadUrl, String filePath, OnRetrofit.OnDownLoadListener listener) {
-//        RetrofitUtil.getInstance().retrofitDownLoadapk(context, downLoadUrl, filePath, listener);
-//        return this;
-//    }
-
     //暂停
-    public void retrofitStop(String downUrl) {
-        RetrofitUtil.getInstance().stop(downUrl);
+    public void retrofitStop(Context context, String downUrl) {
+        RetrofitUtil.getInstance().stop(context, downUrl);
     }
 
     public XUtils seReadTimeout(int readTimeout) {
