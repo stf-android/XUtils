@@ -32,20 +32,12 @@ public class RetrofitAct extends AppCompatActivity {
     Button activityPost;
     @BindView(R.id.activity_down)
     Button activityDown;
-    @BindView(R.id.activity_downapk)
-    Button activityDownapk;
     @BindView(R.id.activity_progress_down)
     ProgressBar activityProgressDown;
-    @BindView(R.id.activity_progress_downapk)
-    ProgressBar activityProgressDownapk;
     @BindView(R.id.activity_Retrofit_textview_down)
     TextView activityRetrofitTextviewDown;
-    @BindView(R.id.activity_Retrofit_textview_downapk)
-    TextView activityRetrofitTextviewDownapk;
     @BindView(R.id.activity_down_stop)
     Button activityDownStop;
-    @BindView(R.id.activity_downapk_stop)
-    Button activityDownapkStop;
 
     private String baseUrl = "http://api.jisuapi.com/weather/query/";
 
@@ -66,7 +58,7 @@ public class RetrofitAct extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.activity_get, R.id.activity_post, R.id.activity_down, R.id.activity_down_stop, R.id.activity_downapk, R.id.activity_downapk_stop})
+    @OnClick({R.id.activity_get, R.id.activity_post, R.id.activity_down, R.id.activity_down_stop})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.activity_get:
@@ -117,10 +109,6 @@ public class RetrofitAct extends AppCompatActivity {
                 break;
             case R.id.activity_down_stop:
                 XUtils.create().retrofitStop(this, downApkUrl);
-                break;
-            case R.id.activity_downapk:
-                break;
-            case R.id.activity_downapk_stop:
                 break;
         }
     }
