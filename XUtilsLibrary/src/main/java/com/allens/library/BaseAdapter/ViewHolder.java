@@ -1,58 +1,120 @@
 package com.allens.library.BaseAdapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.allens.library.XUtils;
 
 public class ViewHolder {
-    /**
-     * 保存所有itemview的集合
-     */
-    private SparseArray<View> mViews;
-
+    private final SparseArray<View> mViews;
+    private int mPosition;
     private View mConvertView;
+    private Context context;
 
-    private ViewHolder(Context context, int layoutId) {
-        mConvertView = View.inflate(context, layoutId, null);
+    private ViewHolder(Context context, ViewGroup parent, int layoutId, int position) {
+        this.mPosition = position;
+        this.context = context;
+        this.mViews = new SparseArray<View>();
+        mConvertView = LayoutInflater.from(context).inflate(layoutId, parent,
+                false);
+        // setTag
         mConvertView.setTag(this);
-
-        mViews = new SparseArray<>();
-    }
-
-    public static ViewHolder newsInstance(View convertView, Context context, int layoutId) {
-        if (convertView == null) {
-            return new ViewHolder(context, layoutId);
-        } else {
-            return (ViewHolder) convertView.getTag();
-        }
     }
 
     /**
-     * 获取根目录的view
+     * 拿到一个ViewHolder对象
      *
+     * @param context
+     * @param convertView
+     * @param parent
+     * @param layoutId
+     * @param position
      * @return
-     * @author 漆可
-     * @date 2016-6-28 下午3:29:21
      */
-    public View getConverView() {
+    public static ViewHolder get(Context context, View convertView,
+                                 ViewGroup parent, int layoutId, int position) {
+        if (convertView == null) {
+            return new ViewHolder(context, parent, layoutId, position);
+        }
+        return (ViewHolder) convertView.getTag();
+    }
+
+    public View getConvertView() {
         return mConvertView;
     }
 
     /**
-     * 获取itemView
+     * 通过控件的Id获取对于的控件，如果没有则加入views
      *
-     * @param id
+     * @param viewId
      * @return
-     * @author 漆可
-     * @date 2016-6-28 下午4:24:26
      */
-    @SuppressWarnings("unchecked")
-    public <T extends View> T getItemView(int id) {
-        View view = mViews.get(id);
+    public <T extends View> T getView(int viewId) {
+        View view = mViews.get(viewId);
         if (view == null) {
-            view = mConvertView.findViewById(id);
-            mViews.append(id, view);
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
         }
         return (T) view;
     }
+
+    /**
+     * 为TextView设置字符串
+     *
+     * @param viewId
+     * @param text
+     * @return
+     */
+    public ViewHolder setText(int viewId, String text) {
+        TextView view = getView(viewId);
+        view.setText(text);
+        return this;
+    }
+
+    /**
+     * 为ImageView设置图片
+     *
+     * @param viewId
+     * @param drawableId
+     * @return
+     */
+    public ViewHolder setImageResource(int viewId, int drawableId) {
+        ImageView view = getView(viewId);
+        view.setImageResource(drawableId);
+        return this;
+    }
+
+    /**
+     * 为ImageView设置图片
+     *
+     * @param viewId
+     * @return
+     */
+    public ViewHolder setImageBitmap(int viewId, Bitmap bm) {
+        ImageView view = getView(viewId);
+        view.setImageBitmap(bm);
+        return this;
+    }
+
+    /**
+     * 为ImageView设置图片
+     *
+     * @param viewId
+     * @return
+     */
+    public ViewHolder setImageByUrl(int viewId, String url) {
+        XUtils.create().loadImageView(context, url, (ImageView) getView(viewId));
+        return this;
+    }
+
+    public int getPosition() {
+        return mPosition;
+    }
+
 }
