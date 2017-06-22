@@ -15,24 +15,12 @@ import android.support.v4.content.ContextCompat;
 
 public class Permission {
 
-    private static Permission mIntance;
-
     private Activity context;
 
     public Permission(Activity context) {
         this.context = context;
     }
 
-    public static Permission newIntance(Activity context) {
-        if (mIntance == null) {
-            synchronized (Permission.class) {
-                if (mIntance == null) {
-                    mIntance = new Permission(context);
-                }
-            }
-        }
-        return mIntance;
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void initISSix() {

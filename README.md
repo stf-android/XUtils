@@ -401,35 +401,53 @@
 
 ```
 
-public class AdapterAct extends AppCompatActivity {
+  public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, ListView listView, final OnAdapterListener.OnAbListListener<T> listener) {
+   
 
-    @BindView(R.id.activity_adapter_ListView)
-    ListView activityAdapterListView;
+```
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adapter);
-        ButterKnife.bind(this);
-        List<User> users = new ArrayList<>();
-        users.add(new User("jhy1", R.mipmap.ic_launcher, "男"));
-        users.add(new User("jhy2", R.mipmap.ic_launcher_round, "男"));
-        users.add(new User("jhy3", R.mipmap.error, "男"));
-        users.add(new User("jhy4", R.mipmap.loading, "男"));
-        users.add(new User("jhy5", R.mipmap.ic_launcher, "男"));
+```
+   public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
+   
+```
 
-        activityAdapterListView.setAdapter(new CommonAdapter<User>(getApplicationContext(), users, R.layout.item_text) {
-            @Override
-            public void convert(ViewHolder helper, User item) {
-                helper.setText(R.id.item_text, item.name);
-                helper.setImageResource(R.id.item_img, item.headId);
-                helper.setText(R.id.item_textName, item.sex);
-            }
-        });
+#### 多类型的适配器
+
+```
+public class ChatAdapter extends MultiItemTypeAdapter<ChatMessage> {
+    public ChatAdapter(Context context, List<ChatMessage> datas) {
+        super(context, datas);
+        addItemViewDelegate(new MsgSendItemDelagate());
+        addItemViewDelegate(new MsgComingItemDelagate());
     }
 }
 
+
+
+public class MsgSendItemDelagate implements ItemViewDelegate<ChatMessage> {
+
+    @Override
+    public int getItemViewLayoutId() {
+        return R.layout.main_chat_send_msg;
+    }
+
+    @Override
+    public boolean isForViewType(ChatMessage item, int position) {
+        return !item.isComMeg();
+    }
+
+    @Override
+    public void convert(ViewHolder holder, ChatMessage chatMessage, int position) {
+        holder.setText(R.id.chat_send_content, chatMessage.getContent());
+        holder.setText(R.id.chat_send_name, chatMessage.getName());
+        holder.setImageResource(R.id.chat_send_icon, chatMessage.getIcon());
+    }
+}
+
+
 ```
+
+
 
 
 ### 获取信息的帮助类

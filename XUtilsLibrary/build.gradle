@@ -58,5 +58,9 @@ dependencies {
     //----logger
     compile 'com.orhanobut:logger:1.3'
 
+    //----弘扬的适配器
+    compile 'com.zhy:base-rvadapter:3.0.3'
+    compile 'com.zhy:base-adapter:3.0.3'
+
 
 }

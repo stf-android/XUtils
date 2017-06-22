@@ -24,21 +24,8 @@ public class LocationUtil {
     private Context mContext;
     private String provider;// 位置提供器
 
-    private LocationUtil(Context context) {
+    public LocationUtil(Context context) {
         this.mContext = context;
-    }
-
-    private static LocationUtil mIntance;
-
-    public static LocationUtil newIntance(Context context) {
-        if (mIntance == null) {
-            synchronized (LocationUtil.class) {
-                if (mIntance == null) {
-                    mIntance = new LocationUtil(context);
-                }
-            }
-        }
-        return mIntance;
     }
 
 

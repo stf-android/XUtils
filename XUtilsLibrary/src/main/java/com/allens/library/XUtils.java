@@ -8,6 +8,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -34,6 +36,8 @@ import com.allens.library.Utils.Permission;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
@@ -425,28 +429,28 @@ public class XUtils {
      */
     // 使用手机再带的功能  返回定位信息
     public XUtils getLocation(Context context, final LocationUtil.OnResultLocationListener listener) {
-        LocationUtil.newIntance(context)
-                .setLocationManger(new LocationUtil.OnResultLocationListener() {
-                    @Override
-                    public void onSuccess(double mLongitude, double mLatitude) {
-                        listener.onSuccess(mLongitude, mLatitude);
-                    }
+        LocationUtil locationUtil = new LocationUtil(context);
+        locationUtil.setLocationManger(new LocationUtil.OnResultLocationListener() {
+            @Override
+            public void onSuccess(double mLongitude, double mLatitude) {
+                listener.onSuccess(mLongitude, mLatitude);
+            }
 
-                    @Override
-                    public void onFail() {
-                        listener.onFail();
-                    }
+            @Override
+            public void onFail() {
+                listener.onFail();
+            }
 
-                    @Override
-                    public void onNoPermission() {
-                        listener.onNoPermission();
-                    }
+            @Override
+            public void onNoPermission() {
+                listener.onNoPermission();
+            }
 
-                    @Override
-                    public void onNoProvider() {//手机没有定位功能
-                        listener.onNoProvider();
-                    }
-                });
+            @Override
+            public void onNoProvider() {//手机没有定位功能
+                listener.onNoProvider();
+            }
+        });
         return this;
     }
 
@@ -510,7 +514,8 @@ public class XUtils {
      * @方法作用： 6.0 权限
      */
     public XUtils setSixPermission(Activity activity) {
-        Permission.newIntance(activity).initISSix();
+        Permission permission = new Permission(activity);
+        permission.initISSix();
         return this;
     }
 
@@ -521,6 +526,36 @@ public class XUtils {
      */
     public XUtils setActivityInfo(Activity activity) {
         SetUtil.create().setActivityInfo(activity);
+        return this;
+    }
+
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/22 上午11:57
+     * @方法作用： adapter
+     */
+    public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, ListView listView, final OnAdapterListener.OnAbListListener<T> listener) {
+        com.zhy.adapter.abslistview.CommonAdapter<T> adapter = new com.zhy.adapter.abslistview.CommonAdapter<T>(context, layoutId, dataList) {
+            @Override
+            protected void convert(com.zhy.adapter.abslistview.ViewHolder viewHolder, T item, int position) {
+                listener.convert(viewHolder, item, position);
+            }
+        };
+        listView.setAdapter(adapter);
+        return this;
+    }
+
+    public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
+        CommonAdapter<T> commonAdapter = new CommonAdapter<T>(context, layoutId, dataList) {
+            @Override
+            protected void convert(ViewHolder holder, T t, int position) {
+                listener.convert(holder, t, position);
+            }
+        };
+        LinearLayoutManager layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layout);
+        recyclerView.setAdapter(commonAdapter);
         return this;
     }
 }
