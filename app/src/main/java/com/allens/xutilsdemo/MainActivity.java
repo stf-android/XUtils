@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import com.allens.library.RxBinding.OnRxBind;
 import com.allens.library.XUtils;
+import com.allens.xutilsdemo.Activity.BaseAdapterAct.AdapterAct;
 import com.allens.xutilsdemo.Activity.GlideAct;
 import com.allens.xutilsdemo.Activity.RetrofitAct;
 import com.allens.xutilsdemo.Activity.TabViewAct;
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     Button activityTab;
     @BindView(R.id.activity_Retrofit)
     Button activityRetrofit;
+    @BindView(R.id.activity_Adapter)
+    Button activityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void OnClickListener() {
                         startActivity(new Intent(MainActivity.this, RetrofitAct.class));
+                    }
+                })
+                .click(activityAdapter, new OnRxBind.OnRxBindingListener() {
+                    @Override
+                    public void OnClickListener() {
+                        startActivity(new Intent(MainActivity.this, AdapterAct.class));
                     }
                 });
     }
