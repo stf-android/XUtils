@@ -396,6 +396,42 @@
 
 ```
 
+
+### 完成适配器
+
+```
+
+public class AdapterAct extends AppCompatActivity {
+
+    @BindView(R.id.activity_adapter_ListView)
+    ListView activityAdapterListView;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_adapter);
+        ButterKnife.bind(this);
+        List<User> users = new ArrayList<>();
+        users.add(new User("jhy1", R.mipmap.ic_launcher, "男"));
+        users.add(new User("jhy2", R.mipmap.ic_launcher_round, "男"));
+        users.add(new User("jhy3", R.mipmap.error, "男"));
+        users.add(new User("jhy4", R.mipmap.loading, "男"));
+        users.add(new User("jhy5", R.mipmap.ic_launcher, "男"));
+
+        activityAdapterListView.setAdapter(new CommonAdapter<User>(getApplicationContext(), users, R.layout.item_text) {
+            @Override
+            public void convert(ViewHolder helper, User item) {
+                helper.setText(R.id.item_text, item.name);
+                helper.setImageResource(R.id.item_img, item.headId);
+                helper.setText(R.id.item_textName, item.sex);
+            }
+        });
+    }
+}
+
+```
+
+
 ### 获取信息的帮助类
 
 ```
