@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.allens.library.Screen.Screen;
 import com.allens.library.Screen.ScreenUtils;
@@ -33,6 +34,7 @@ import com.allens.library.RxBinding.RxBindUtil;
 import com.allens.library.SQL.OnSql;
 import com.allens.library.SQL.SqlUtil;
 import com.allens.library.Utils.Permission;
+import com.allens.library.Utils.PrefUtils;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -562,6 +564,23 @@ public class XUtils {
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(commonAdapter);
         return this;
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/23 下午6:55
+     * @方法作用： onBackPressed
+     */
+    private long lastTime;
+
+    public void onBackPressed(Activity act) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastTime < 2 * 1000) {
+            ActivityContainer.newInstance().exit();
+        } else {
+            Toast.makeText(act, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
+            lastTime = currentTime;
+        }
     }
 }
 

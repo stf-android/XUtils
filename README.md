@@ -449,6 +449,12 @@ public class MsgSendItemDelagate implements ItemViewDelegate<ChatMessage> {
 
 
 
+### SharePreference 工具类
+
+```
+PrefUtils
+```
+
 
 ### 获取信息的帮助类
 
