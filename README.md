@@ -33,7 +33,7 @@
 ```
 
 	dependencies {
-	        compile 'com.github.JiangHaiYang01:XUtils:0.4'
+	        compile 'com.github.JiangHaiYang01:XUtils:0.7'
 	}
 ```
 
