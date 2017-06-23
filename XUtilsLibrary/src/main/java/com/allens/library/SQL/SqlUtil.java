@@ -48,7 +48,7 @@ public class SqlUtil {
                 ContentValues cv = new ContentValues();
                 listener.onThreadIO(database, cv);
                 cv.clear();
-                database.close();
+//                database.close();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -75,10 +75,10 @@ public class SqlUtil {
         listener.onUpData(db, cv);
         cv.clear();
         db.setTransactionSuccessful();
-        if (db.isOpen()) {
-            db.endTransaction();
-            db.close();
-        }
+//        if (db.isOpen()) {
+        db.endTransaction();
+//            db.close();
+//        }
     }
 
     public void sqlInsert(final SQLiteDatabase db, OnSql.OnSqlInsertListener listener) {
@@ -87,19 +87,24 @@ public class SqlUtil {
         listener.onInsert(db, cv);
         cv.clear();
         db.setTransactionSuccessful();
-        if (db.isOpen()) {
-            db.endTransaction();
-            db.close();
-        }
+//        if (db.isOpen()) {
+        db.endTransaction();
+//            db.close();
+//        }
     }
 
     public void sqlDelete(final SQLiteDatabase db, String table, String whereClause, String[] whereArgs) {
         db.delete(table, whereClause, whereArgs);
-        if (db.isOpen())
-            db.close();
+//        if (db.isOpen())
+//            db.close();
     }
 
     public void sqlDeleteSQL(Context context, String dataBaseName) {
         context.deleteDatabase(dataBaseName);
+    }
+
+    public void closeDb(SQLiteDatabase db) {
+        if (db.isOpen())
+            db.close();
     }
 }
