@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -550,6 +551,17 @@ public class XUtils {
             }
         };
         listView.setAdapter(adapter);
+        return this;
+    }
+
+    public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, GridView gridview, final OnAdapterListener.OnAbListListener<T> listener) {
+        com.zhy.adapter.abslistview.CommonAdapter<T> adapter = new com.zhy.adapter.abslistview.CommonAdapter<T>(context, layoutId, dataList) {
+            @Override
+            protected void convert(com.zhy.adapter.abslistview.ViewHolder viewHolder, T item, int position) {
+                listener.convert(viewHolder, item, position);
+            }
+        };
+        gridview.setAdapter(adapter);
         return this;
     }
 
