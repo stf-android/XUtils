@@ -71,18 +71,26 @@ public class SqlUtil {
      */
     public void sqlUpData(final SQLiteDatabase db, OnSql.OnSqlUpDataListener listener) {
         ContentValues cv = new ContentValues();
+        db.beginTransaction();
         listener.onUpData(db, cv);
         cv.clear();
-        if (db.isOpen())
+        db.setTransactionSuccessful();
+        if (db.isOpen()) {
+            db.endTransaction();
             db.close();
+        }
     }
 
     public void sqlInsert(final SQLiteDatabase db, OnSql.OnSqlInsertListener listener) {
+        db.beginTransaction();
         ContentValues cv = new ContentValues();
         listener.onInsert(db, cv);
         cv.clear();
-        if (db.isOpen())
+        db.setTransactionSuccessful();
+        if (db.isOpen()) {
+            db.endTransaction();
             db.close();
+        }
     }
 
     public void sqlDelete(final SQLiteDatabase db, String table, String whereClause, String[] whereArgs) {
