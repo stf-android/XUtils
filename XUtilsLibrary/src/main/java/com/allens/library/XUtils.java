@@ -259,6 +259,11 @@ public class XUtils {
     }
 
 
+    public XUtils sqlCloseDb(SQLiteDatabase db) {
+        SqlUtil.create().closeDb(db);
+        return this;
+    }
+
     /**
      * @作者 ：  allens
      * @创建日期 ：2017/6/10 下午3:47
