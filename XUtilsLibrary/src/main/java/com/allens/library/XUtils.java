@@ -554,7 +554,7 @@ public class XUtils {
         return this;
     }
 
-    public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, GridView gridview, final OnAdapterListener.OnAbListListener<T> listener) {
+    public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, GridView gridview, final OnAdapterListener.OnAbListListener<T> listener) {
         com.zhy.adapter.abslistview.CommonAdapter<T> adapter = new com.zhy.adapter.abslistview.CommonAdapter<T>(context, layoutId, dataList) {
             @Override
             protected void convert(com.zhy.adapter.abslistview.ViewHolder viewHolder, T item, int position) {
@@ -562,10 +562,10 @@ public class XUtils {
             }
         };
         gridview.setAdapter(adapter);
-        return this;
+        return adapter;
     }
 
-    public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
+    public <T> CommonAdapter adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
         CommonAdapter<T> commonAdapter = new CommonAdapter<T>(context, layoutId, dataList) {
             @Override
             protected void convert(ViewHolder holder, T t, int position) {
@@ -575,7 +575,7 @@ public class XUtils {
         LinearLayoutManager layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(commonAdapter);
-        return this;
+        return commonAdapter;
     }
 
     /**
