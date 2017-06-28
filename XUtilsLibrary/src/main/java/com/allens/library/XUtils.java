@@ -36,12 +36,14 @@ import com.allens.library.SQL.OnSql;
 import com.allens.library.SQL.SqlUtil;
 import com.allens.library.Utils.Permission;
 import com.allens.library.Utils.PrefUtils;
+import com.allens.library.adapter.ViewPagerAdapter;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -576,6 +578,12 @@ public class XUtils {
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(commonAdapter);
         return commonAdapter;
+    }
+
+    public ViewPagerAdapter adapter(FragmentManager fragmentManager, ViewPager viewPager, ArrayList<Fragment> fragments) {
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(fragmentManager, fragments);
+        viewPager.setAdapter(viewPagerAdapter);
+        return viewPagerAdapter;
     }
 
     /**
