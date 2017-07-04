@@ -62,4 +62,9 @@ public class PrefUtils {
     public void remove(String key) {
         sp.edit().remove(key).apply();
     }
+
+    public void clear() {
+        if (sp != null)
+            sp.edit().clear().apply();
+    }
 }
