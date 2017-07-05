@@ -3,6 +3,8 @@ package com.allens.library;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -601,6 +603,40 @@ public class XUtils {
             Toast.makeText(act, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
             lastTime = currentTime;
         }
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/2/7 下午2:44
+     * @方法作用： 获取版本号
+     */
+    public int getVersionCode(Context context) {
+        PackageManager manager = context.getPackageManager();//获取包管理器
+        try {
+            //通过当前的包名获取包的信息
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);//获取包对象信息
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/2/7 下午2:44
+     * @方法作用： 获取版本号
+     */
+    public String getVersionName(Context context) {
+        PackageManager manager = context.getPackageManager();//获取包管理器
+        try {
+            //通过当前的包名获取包的信息
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);//获取包对象信息
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 
