@@ -595,12 +595,12 @@ public class XUtils {
      */
     private long lastTime;
 
-    public void onBackPressed(Activity act) {
+    public void onBackPressed(Activity act, Api.OnBackListener listener) {
         long currentTime = System.currentTimeMillis();
         if (currentTime - lastTime < 2 * 1000) {
             ActivityContainer.newInstance().exit();
         } else {
-            Toast.makeText(act, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
+            listener.onBack();
             lastTime = currentTime;
         }
     }
