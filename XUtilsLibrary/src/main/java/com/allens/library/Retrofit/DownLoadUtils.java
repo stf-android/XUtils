@@ -60,7 +60,7 @@ public class DownLoadUtils {
         this.downLoadUrl = downLoadUrl;
         this.filePath = filePath;
         this.loadListener = loadListener;
-        initSwitch(getState());
+        initSwitch(getState(), loadListener);
     }
 
     /**
@@ -68,7 +68,7 @@ public class DownLoadUtils {
      * @创建日期 ：2017/6/19 下午2:34
      * @方法作用： 不同状态 不同处理方式
      */
-    private void initSwitch(int state) {
+    private void initSwitch(int state, OnRetrofit.OnDownLoadListener loadListener) {
         if (state == XConfig.DWONLOAD_START) {
             Logger.i("DWONLOAD_START");
             initStart();
@@ -82,7 +82,7 @@ public class DownLoadUtils {
 
                 File file = new File(file_path);
                 if (file.exists()) {
-                    Toast.makeText(context, "文件已下载 位置在 " + file_path, Toast.LENGTH_SHORT).show();
+                    loadListener.hasDown(file_path);
                 } else {
                     initStart();
                 }

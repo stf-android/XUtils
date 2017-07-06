@@ -29,6 +29,8 @@ public interface OnRetrofit<T> {
         void onSuccess(int count, int State);
 
         void onError(Throwable e);
+
+        void hasDown(String path);
     }
 
 }
