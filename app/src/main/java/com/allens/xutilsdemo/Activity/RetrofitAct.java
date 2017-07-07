@@ -105,6 +105,11 @@ public class RetrofitAct extends AppCompatActivity {
                     public void onError(Throwable e) {
 
                     }
+
+                    @Override
+                    public void hasDown(String path) {
+                        
+                    }
                 });
                 break;
             case R.id.activity_down_stop:
