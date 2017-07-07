@@ -4,6 +4,7 @@ package com.allens.library.Retrofit;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -99,6 +100,7 @@ public class RetrofitUtil {
                     public void onNext(@NonNull ResponseBody responseBody) {
                         try {
                             Gson gson = new Gson();
+                            Log.e("JSON",responseBody.toString());
                             T t = gson.fromJson(responseBody.string(), tClass);
                             listener.onSuccess(t);
                         } catch (IOException e) {
@@ -137,6 +139,7 @@ public class RetrofitUtil {
                     public void onNext(@NonNull ResponseBody responseBody) {
                         try {
                             Gson gson = new Gson();
+                            Log.e("JSON",responseBody.toString());
                             T t = gson.fromJson(responseBody.string(), tClass);
                             listener.onSuccess(t);
                         } catch (IOException e) {
