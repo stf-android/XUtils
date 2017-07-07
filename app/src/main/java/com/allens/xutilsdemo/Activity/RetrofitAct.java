@@ -108,7 +108,7 @@ public class RetrofitAct extends AppCompatActivity {
 
                     @Override
                     public void hasDown(String path) {
-                        
+
                     }
                 });
                 break;
