@@ -21,14 +21,14 @@ import io.reactivex.functions.Consumer;
 public class RxBindUtil {
 
 
-    private static RxBindUtil instance;
+//    private static RxBindUtil instance;
 
-    public static RxBindUtil newInstance() {
-        if (null == instance) {
-            instance = new RxBindUtil();
-        }
-        return instance;
-    }
+//    public static RxBindUtil newInstance() {
+//        if (null == instance) {
+//            instance = new RxBindUtil();
+//        }
+//        return instance;
+//    }
 
     /**
      * @作者 ：  allens

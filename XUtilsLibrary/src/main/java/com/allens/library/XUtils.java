@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -38,6 +39,8 @@ import com.allens.library.SQL.OnSql;
 import com.allens.library.SQL.SqlUtil;
 import com.allens.library.Utils.Permission;
 import com.allens.library.Utils.PrefUtils;
+import com.allens.library.adapter.AdapterUtil;
+import com.allens.library.adapter.MyPagerAdapter;
 import com.allens.library.adapter.ViewPagerAdapter;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -79,7 +82,7 @@ public class XUtils {
     }
 
     //删除Activity
-    public XUtils romveActivity(Activity activity) {
+    public XUtils removeActivity(Activity activity) {
         ActivityContainer.newInstance().romveActivity(activity);
         return this;
     }
@@ -97,110 +100,110 @@ public class XUtils {
      */
     //默认加载
     public <T> XUtils loadImageView(Context mContext, T path, ImageView mImageView) {
-        GlideUtil.create().loadImageView(mContext, path, mImageView);
+        new GlideUtil().loadImageView(mContext, path, mImageView);
         return this;
     }
 
     //加载指定大小
     public <T> XUtils loadImageViewSize(Context mContext, T path, int width, int height, ImageView mImageView) {
-        GlideUtil.create().loadImageViewSize(mContext, path, width, height, mImageView);
+        new GlideUtil().loadImageViewSize(mContext, path, width, height, mImageView);
         return this;
     }
 
     //设置加载中以及加载失败图片
     public <T> XUtils loadImageViewLoading(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView) {
-        GlideUtil.create().loadImageViewLoading(mContext, path, mImageView, loadingImage, errorImageView);
+        new GlideUtil().loadImageViewLoading(mContext, path, mImageView, loadingImage, errorImageView);
         return this;
     }
 
     //圆形图片
     public <T> XUtils loadImageViewCircle(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView, int borderWidth, int borderColor) {
-        GlideUtil.create().loadImageViewCircle(mContext, path, mImageView, loadingImage, errorImageView, borderWidth, borderColor);
+        new GlideUtil().loadImageViewCircle(mContext, path, mImageView, loadingImage, errorImageView, borderWidth, borderColor);
         return this;
     }
 
     //圆角图片
     public <T> XUtils loadImageViewRound(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView, int radian) {
-        GlideUtil.create().loadImageViewRound(mContext, path, mImageView, loadingImage, errorImageView, radian);
+        new GlideUtil().loadImageViewRound(mContext, path, mImageView, loadingImage, errorImageView, radian);
         return this;
     }
 
     //设置加载中以及加载失败图片并且指定大小
     public <T> XUtils loadImageViewLoadingSize(Context mContext, T path, int width, int height, ImageView mImageView, int loadingImage, int errorImageView) {
-        GlideUtil.create().loadImageViewLoadingSize(mContext, path, width, height, mImageView, loadingImage, errorImageView);
+        new GlideUtil().loadImageViewLoadingSize(mContext, path, width, height, mImageView, loadingImage, errorImageView);
         return this;
     }
 
     //设置跳过内存缓存
     public <T> XUtils loadImageViewCache(Context mContext, T path, ImageView mImageView) {
-        GlideUtil.create().loadImageViewCache(mContext, path, mImageView);
+        new GlideUtil().loadImageViewCache(mContext, path, mImageView);
         return this;
     }
 
     //设置下载优先级
     //0 ---4   0最快
     public <T> XUtils loadImageViewPriority(Context mContext, T path, ImageView mImageView, int priority) {
-        GlideUtil.create().loadImageViewPriority(mContext, path, mImageView, priority);
+        new GlideUtil().loadImageViewPriority(mContext, path, mImageView, priority);
         return this;
     }
 
     //设置缓存策略 all:缓存源资源和转换后的资源  none:不作任何磁盘缓存 source:缓存源资源 result：缓存转换后的资源
     public <T> XUtils loadImageViewDiskCache(Context mContext, T path, ImageView mImageView, int diskCacheStrategy) {
-        GlideUtil.create().loadImageViewDiskCache(mContext, path, mImageView, diskCacheStrategy);
+        new GlideUtil().loadImageViewDiskCache(mContext, path, mImageView, diskCacheStrategy);
         return this;
     }
 
     //设置加载动画
     public <T> XUtils loadImageViewAnim(Context mContext, T path, int anim, ImageView mImageView) {
-        GlideUtil.create().loadImageViewAnim(mContext, path, anim, mImageView);
+        new GlideUtil().loadImageViewAnim(mContext, path, anim, mImageView);
         return this;
     }
 
     //设置缩略图支持 会先加载缩略图
     public <T> XUtils loadImageViewThumbnail(Context mContext, T path, ImageView mImageView) {
-        GlideUtil.create().loadImageViewThumbnail(mContext, path, mImageView);
+        new GlideUtil().loadImageViewThumbnail(mContext, path, mImageView);
         return this;
     }
 
     //设置动态GIF加载方式
     public <T> XUtils loadImageViewDynamicGif(Context mContext, T path, ImageView mImageView, int loadingImage, int errorImageView) {
-        GlideUtil.create().loadImageViewDynamicGif(mContext, path, mImageView, loadingImage, errorImageView);
+        new GlideUtil().loadImageViewDynamicGif(mContext, path, mImageView, loadingImage, errorImageView);
         return this;
     }
 
     //设置静态GIF加载方式
     public <T> XUtils loadImageViewStaticGif(Context mContext, T path, ImageView mImageView) {
-        GlideUtil.create().loadImageViewStaticGif(mContext, path, mImageView);
+        new GlideUtil().loadImageViewStaticGif(mContext, path, mImageView);
         return this;
     }
 
     //设置动态转换 api提供了比如：centerCrop()、fitCenter()等
     public <T> XUtils loadImageViewCrop(Context mContext, T path, ImageView mImageView) {
-        GlideUtil.create().loadImageViewCrop(mContext, path, mImageView);
+        new GlideUtil().loadImageViewCrop(mContext, path, mImageView);
         return this;
     }
 
     //设置监听请求接口  设置监听的用处 可以用于监控请求发生错误来源，以及图片来源 是内存还是磁盘
     public <T> XUtils loadImageViewListener(Context mContext, T path, ImageView mImageView, RequestListener<T, GlideDrawable> requstlistener) {
-        GlideUtil.create().loadImageViewListener(mContext, path, mImageView, requstlistener);
+        new GlideUtil().loadImageViewListener(mContext, path, mImageView, requstlistener);
         return this;
     }
 
     //设置要加载的内容  项目中有很多需要先下载图片然后再做一些合成的功能，比如项目中出现的图文混排
     public <T> XUtils loadImageViewContent(Context mContext, T path, SimpleTarget<GlideDrawable> simpleTarget) {
-        GlideUtil.create().loadImageViewContent(mContext, path, simpleTarget);
+        new GlideUtil().loadImageViewContent(mContext, path, simpleTarget);
         return this;
     }
 
     //清理磁盘缓存
     public XUtils glideClearDiskCache(Context mContext) {
-        GlideUtil.create().GuideClearDiskCache(mContext);
+        new GlideUtil().GuideClearDiskCache(mContext);
         return this;
     }
 
     //清理内存缓存  可以在UI主线程中进行
     public XUtils glideClearMemory(Context mContext) {
-        GlideUtil.create().GuideClearMemory(mContext);
+        new GlideUtil().GuideClearMemory(mContext);
         return this;
     }
 
@@ -321,7 +324,7 @@ public class XUtils {
      */
     //单点
     public XUtils click(View view, final OnRxBind.OnRxBindingListener listener) {
-        RxBindUtil.newInstance().click(view, new OnRxBind.OnRxBindingListener() {
+        new RxBindUtil().click(view, new OnRxBind.OnRxBindingListener() {
             @Override
             public void OnClickListener() {
                 listener.OnClickListener();
@@ -332,7 +335,7 @@ public class XUtils {
 
     //长按
     public XUtils clickLong(View view, final OnRxBind.OnRxBindingListener listener) {
-        RxBindUtil.newInstance().clicklong(view, new OnRxBind.OnRxBindingListener() {
+        new RxBindUtil().clicklong(view, new OnRxBind.OnRxBindingListener() {
             @Override
             public void OnClickListener() {
                 listener.OnClickListener();
@@ -344,7 +347,7 @@ public class XUtils {
     //checkbox
     public XUtils click(CheckBox view, final OnRxBind.OnRxBindingBooleanListener listener) {
 
-        RxBindUtil.newInstance().clickCheckBox(view, new OnRxBind.OnRxBindingBooleanListener() {
+        new RxBindUtil().clickCheckBox(view, new OnRxBind.OnRxBindingBooleanListener() {
             @Override
             public void OnClickListener(Boolean mBoolean) {
                 listener.OnClickListener(mBoolean);
@@ -355,7 +358,7 @@ public class XUtils {
 
     //listview
     public XUtils click(ListView listView, final OnRxBind.OnRxBindListViewListener listener) {
-        RxBindUtil.newInstance().clickListView(listView, new OnRxBind.OnRxBindListViewListener() {
+        new RxBindUtil().clickListView(listView, new OnRxBind.OnRxBindListViewListener() {
             @Override
             public void OnClickListener(Integer integer) {
                 listener.OnClickListener(integer);
@@ -366,7 +369,7 @@ public class XUtils {
 
     //listview 长按
     public void clickLong(ListView listView, final OnRxBind.OnRxBindListViewListener listener) {
-        RxBindUtil.newInstance().clickLongListView(listView, new OnRxBind.OnRxBindListViewListener() {
+        new RxBindUtil().clickLongListView(listView, new OnRxBind.OnRxBindListViewListener() {
             @Override
             public void OnClickListener(Integer integer) {
                 listener.OnClickListener(integer);
@@ -433,6 +436,119 @@ public class XUtils {
         return this;
     }
 
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/13 下午9:27
+     * @方法作用： 6.0 权限
+     */
+    public XUtils setSixPermission(Activity activity) {
+        Permission permission = new Permission(activity);
+        permission.initISSix();
+        return this;
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/14 上午9:47
+     * @方法作用： 设置竖屏
+     */
+    public XUtils setActivityInfo(Activity activity) {
+        SetUtil.create().setActivityInfo(activity);
+        return this;
+    }
+
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/22 上午11:57
+     * @方法作用： adapter
+     */
+    public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, ListView listView, final OnAdapterListener.OnAbListListener<T> listener) {
+        return new AdapterUtil().adapter(context, layoutId, dataList, listView, listener);
+    }
+
+    public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, GridView gridview, final OnAdapterListener.OnAbListListener<T> listener) {
+        return new AdapterUtil().adapter(context, layoutId, dataList, gridview, listener);
+    }
+
+    public <T> CommonAdapter adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
+        return new AdapterUtil().adapter(context, layoutId, dataList, recyclerView, listener);
+    }
+
+    public ViewPagerAdapter adapter(FragmentManager fragmentManager, ViewPager viewPager, ArrayList<Fragment> fragments) {
+        return new AdapterUtil().adapter(fragmentManager, viewPager, fragments);
+    }
+
+    public MyPagerAdapter adapter(ViewPager viewPager, ArrayList<View> viewArrayList) {
+        return new AdapterUtil().adapter(viewPager, viewArrayList);
+    }
+
+    public MyPagerAdapter adapter(Context context, ViewPager viewPager, ArrayList<Integer> imgResIds) {
+        return new AdapterUtil().adapter(context, viewPager, imgResIds);
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/6/23 下午6:55
+     * @方法作用： onBackPressed
+     */
+    private long lastTime;
+
+    public void onBackPressed(Activity act, Api.OnBackListener listener) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastTime < 2 * 1000) {
+            ActivityContainer.newInstance().exit();
+        } else {
+            listener.onBack();
+            lastTime = currentTime;
+        }
+    }
+
+
+    /**
+     *
+     * @ User :  allens
+     * @ 创建日期 :  2017/7/13 上午10:02
+     * @模块作用 ： get
+     *
+     *====================================================================================================================================
+     *====================================================================================================================================
+     * */
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/2/7 下午2:44
+     * @方法作用： 获取版本号
+     */
+    public int getVersionCode(Context context) {
+        PackageManager manager = context.getPackageManager();//获取包管理器
+        try {
+            //通过当前的包名获取包的信息
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);//获取包对象信息
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * @作者 ：  allens
+     * @创建日期 ：2017/2/7 下午2:44
+     * @方法作用： 获取版本号
+     */
+    public String getVersionName(Context context) {
+        PackageManager manager = context.getPackageManager();//获取包管理器
+        try {
+            //通过当前的包名获取包的信息
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);//获取包对象信息
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * @作者 ：  allens
@@ -520,124 +636,6 @@ public class XUtils {
         return this;
     }
 
-    /**
-     * @作者 ：  allens
-     * @创建日期 ：2017/6/13 下午9:27
-     * @方法作用： 6.0 权限
-     */
-    public XUtils setSixPermission(Activity activity) {
-        Permission permission = new Permission(activity);
-        permission.initISSix();
-        return this;
-    }
-
-    /**
-     * @作者 ：  allens
-     * @创建日期 ：2017/6/14 上午9:47
-     * @方法作用： 设置竖屏
-     */
-    public XUtils setActivityInfo(Activity activity) {
-        SetUtil.create().setActivityInfo(activity);
-        return this;
-    }
-
-
-    /**
-     * @作者 ：  allens
-     * @创建日期 ：2017/6/22 上午11:57
-     * @方法作用： adapter
-     */
-    public <T> XUtils adapter(Context context, int layoutId, List<T> dataList, ListView listView, final OnAdapterListener.OnAbListListener<T> listener) {
-        com.zhy.adapter.abslistview.CommonAdapter<T> adapter = new com.zhy.adapter.abslistview.CommonAdapter<T>(context, layoutId, dataList) {
-            @Override
-            protected void convert(com.zhy.adapter.abslistview.ViewHolder viewHolder, T item, int position) {
-                listener.convert(viewHolder, item, position);
-            }
-        };
-        listView.setAdapter(adapter);
-        return this;
-    }
-
-    public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, GridView gridview, final OnAdapterListener.OnAbListListener<T> listener) {
-        com.zhy.adapter.abslistview.CommonAdapter<T> adapter = new com.zhy.adapter.abslistview.CommonAdapter<T>(context, layoutId, dataList) {
-            @Override
-            protected void convert(com.zhy.adapter.abslistview.ViewHolder viewHolder, T item, int position) {
-                listener.convert(viewHolder, item, position);
-            }
-        };
-        gridview.setAdapter(adapter);
-        return adapter;
-    }
-
-    public <T> CommonAdapter adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
-        CommonAdapter<T> commonAdapter = new CommonAdapter<T>(context, layoutId, dataList) {
-            @Override
-            protected void convert(ViewHolder holder, T t, int position) {
-                listener.convert(holder, t, position);
-            }
-        };
-        LinearLayoutManager layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setAdapter(commonAdapter);
-        return commonAdapter;
-    }
-
-    public ViewPagerAdapter adapter(FragmentManager fragmentManager, ViewPager viewPager, ArrayList<Fragment> fragments) {
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(fragmentManager, fragments);
-        viewPager.setAdapter(viewPagerAdapter);
-        return viewPagerAdapter;
-    }
-
-    /**
-     * @作者 ：  allens
-     * @创建日期 ：2017/6/23 下午6:55
-     * @方法作用： onBackPressed
-     */
-    private long lastTime;
-
-    public void onBackPressed(Activity act, Api.OnBackListener listener) {
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastTime < 2 * 1000) {
-            ActivityContainer.newInstance().exit();
-        } else {
-            listener.onBack();
-            lastTime = currentTime;
-        }
-    }
-
-    /**
-     * @作者 ：  allens
-     * @创建日期 ：2017/2/7 下午2:44
-     * @方法作用： 获取版本号
-     */
-    public int getVersionCode(Context context) {
-        PackageManager manager = context.getPackageManager();//获取包管理器
-        try {
-            //通过当前的包名获取包的信息
-            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);//获取包对象信息
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    /**
-     * @作者 ：  allens
-     * @创建日期 ：2017/2/7 下午2:44
-     * @方法作用： 获取版本号
-     */
-    public String getVersionName(Context context) {
-        PackageManager manager = context.getPackageManager();//获取包管理器
-        try {
-            //通过当前的包名获取包的信息
-            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);//获取包对象信息
-            return info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }
 
 

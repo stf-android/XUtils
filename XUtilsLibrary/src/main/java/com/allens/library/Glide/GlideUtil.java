@@ -30,18 +30,18 @@ public class GlideUtil {
      * 高效处理Bitmap  使用Bitmap Pool使Bitmap复用，主动调用recycle回收需要回收的Bitmap，减小系统回收压力
      * 这里默认支持Context，Glide支持Context,Activity,Fragment，FragmentActivity
      */
-    private static GlideUtil glideUtil;
-
-    public static GlideUtil create() {
-        if (glideUtil == null) {
-            synchronized (GlideUtil.class) {
-                if (glideUtil == null) {
-                    glideUtil = new GlideUtil();
-                }
-            }
-        }
-        return glideUtil;
-    }
+//    private static GlideUtil glideUtil;
+//
+//    public static GlideUtil create() {
+//        if (glideUtil == null) {
+//            synchronized (GlideUtil.class) {
+//                if (glideUtil == null) {
+//                    glideUtil = new GlideUtil();
+//                }
+//            }
+//        }
+//        return glideUtil;
+//    }
 
     //默认加载
     public <T> void loadImageView(Context mContext, T path, ImageView mImageView) {
