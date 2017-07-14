@@ -3,6 +3,7 @@ package com.allens.library;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,21 +11,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.allens.library.Screen.Screen;
 import com.allens.library.Screen.ScreenUtils;
 import com.allens.library.SetAndGet.GetUtil;
-import com.allens.library.SetAndGet.SetUtil;
 import com.allens.library.Utils.ActivityContainer;
 import com.allens.library.Utils.CrashHandler;
 import com.allens.library.Utils.LocationUtil;
@@ -38,7 +35,6 @@ import com.allens.library.RxBinding.RxBindUtil;
 import com.allens.library.SQL.OnSql;
 import com.allens.library.SQL.SqlUtil;
 import com.allens.library.Utils.Permission;
-import com.allens.library.Utils.PrefUtils;
 import com.allens.library.adapter.AdapterUtil;
 import com.allens.library.adapter.MyPagerAdapter;
 import com.allens.library.adapter.ViewPagerAdapter;
@@ -46,7 +42,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -454,7 +449,9 @@ public class XUtils {
      * @方法作用： 设置竖屏
      */
     public XUtils setActivityInfo(Activity activity) {
-        SetUtil.create().setActivityInfo(activity);
+        if (activity.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         return this;
     }
 
@@ -589,11 +586,11 @@ public class XUtils {
      * @方法作用： 当前时间
      */
     public String getCurrentTime() {
-        return GetUtil.create().getCurrentTime();
+        return new GetUtil().getCurrentTime();
     }
 
     public XUtils setCurrentTimeFormat(String format) {
-        GetUtil.create().setFormat(format);
+        new GetUtil().setFormat(format);
         return this;
     }
 

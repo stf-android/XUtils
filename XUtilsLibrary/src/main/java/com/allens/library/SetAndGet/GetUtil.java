@@ -17,18 +17,18 @@ import java.util.Date;
 
 public class GetUtil {
 
-    private static GetUtil setUtil;
-
-    public static GetUtil create() {
-        if (setUtil == null) {
-            synchronized (SetUtil.class) {
-                if (setUtil == null) {
-                    setUtil = new GetUtil();
-                }
-            }
-        }
-        return setUtil;
-    }
+//    private static GetUtil setUtil;
+//
+//    public static GetUtil create() {
+//        if (setUtil == null) {
+//            synchronized (SetUtil.class) {
+//                if (setUtil == null) {
+//                    setUtil = new GetUtil();
+//                }
+//            }
+//        }
+//        return setUtil;
+//    }
 
     /**
      * @作者 ：  allens
