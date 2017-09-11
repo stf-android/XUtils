@@ -37,6 +37,7 @@ import com.allens.library.SQL.SqlUtil;
 import com.allens.library.Utils.Permission;
 import com.allens.library.adapter.AdapterUtil;
 import com.allens.library.adapter.MyPagerAdapter;
+import com.allens.library.adapter.OnAdapterListener;
 import com.allens.library.adapter.ViewPagerAdapter;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;

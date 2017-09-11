@@ -1,4 +1,4 @@
-package com.allens.library;
+package com.allens.library.adapter;
 
 
 import com.zhy.adapter.recyclerview.base.ViewHolder;
