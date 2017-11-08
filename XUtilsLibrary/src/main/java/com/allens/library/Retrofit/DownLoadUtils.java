@@ -3,8 +3,10 @@ package com.allens.library.Retrofit;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 import com.allens.library.XConfig;
@@ -321,11 +323,24 @@ public class DownLoadUtils {
     private void isAPK(String file_path) {
         File file = new File(file_path);
         if (file.getName().endsWith(".apk")) {
-            Intent install = new Intent();
-            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            install.setAction(android.content.Intent.ACTION_VIEW);
-            install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-            context.startActivity(install);
+//            Intent install = new Intent();
+//            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            install.setAction(android.content.Intent.ACTION_VIEW);
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);//通过FileProvider创建一个content类型的Uri
+            } else {
+                uri = Uri.fromFile(file);
+            }
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(android.content.Intent.ACTION_VIEW);
+//            Uri uri = Uri.fromFile(file);
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            context.startActivity(intent);
         }
     }
 }
