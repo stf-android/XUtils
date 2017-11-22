@@ -30,6 +30,9 @@ public class GetUtil {
 //        return setUtil;
 //    }
 
+
+    boolean isChange = false;
+
     /**
      * @作者 ：  allens
      * @创建日期 ：2017/3/9 下午5:02
@@ -39,13 +42,20 @@ public class GetUtil {
 
     public GetUtil setFormat(String format) {
         this.format = format;
+        isChange = true;
         return this;
     }
 
     public String getCurrentTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        SimpleDateFormat formatter;
+        if (isChange) {
+            formatter = new SimpleDateFormat(format);
+        }else {
+            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        }
         long date = System.currentTimeMillis();
         Date curDate = new Date(date);//获取当前时间
+        isChange = false;
         return formatter.format(curDate);
     }
 }
