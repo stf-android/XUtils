@@ -24,6 +24,19 @@ import java.util.List;
 
 public class AdapterUtil {
 
+    private LinearLayoutManager layout;
+
+
+    private static AdapterUtil adapterUtil;
+
+
+    public static AdapterUtil create() {
+        if (adapterUtil == null) {
+            adapterUtil = new AdapterUtil();
+        }
+        return adapterUtil;
+    }
+
     public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, GridView gridview,
                                                                  final OnAdapterListener.OnAbListListener<T> listener) {
         com.zhy.adapter.abslistview.CommonAdapter<T> adapter = new com.zhy.adapter.abslistview.CommonAdapter<T>(context, layoutId, dataList) {
@@ -54,10 +67,15 @@ public class AdapterUtil {
                 listener.convert(holder, t, position);
             }
         };
-        LinearLayoutManager layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(commonAdapter);
         return commonAdapter;
+    }
+
+
+    public LinearLayoutManager getLinearLayoutManager() {
+        return layout;
     }
 
 

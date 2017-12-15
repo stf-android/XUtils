@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
@@ -463,27 +464,31 @@ public class XUtils {
      * @方法作用： adapter
      */
     public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, ListView listView, final OnAdapterListener.OnAbListListener<T> listener) {
-        return new AdapterUtil().adapter(context, layoutId, dataList, listView, listener);
+        return AdapterUtil.create().adapter(context, layoutId, dataList, listView, listener);
     }
 
     public <T> com.zhy.adapter.abslistview.CommonAdapter adapter(Context context, int layoutId, List<T> dataList, GridView gridview, final OnAdapterListener.OnAbListListener<T> listener) {
-        return new AdapterUtil().adapter(context, layoutId, dataList, gridview, listener);
+        return AdapterUtil.create().adapter(context, layoutId, dataList, gridview, listener);
     }
 
     public <T> CommonAdapter adapter(Context context, int layoutId, List<T> dataList, RecyclerView recyclerView, final OnAdapterListener.OnRvListener<T> listener) {
-        return new AdapterUtil().adapter(context, layoutId, dataList, recyclerView, listener);
+        return AdapterUtil.create().adapter(context, layoutId, dataList, recyclerView, listener);
     }
 
     public ViewPagerAdapter adapter(FragmentManager fragmentManager, ViewPager viewPager, ArrayList<Fragment> fragments) {
-        return new AdapterUtil().adapter(fragmentManager, viewPager, fragments);
+        return AdapterUtil.create().adapter(fragmentManager, viewPager, fragments);
     }
 
     public MyPagerAdapter adapter(ViewPager viewPager, ArrayList<View> viewArrayList) {
-        return new AdapterUtil().adapter(viewPager, viewArrayList);
+        return AdapterUtil.create().adapter(viewPager, viewArrayList);
     }
 
     public MyPagerAdapter adapter(Context context, ViewPager viewPager, ArrayList<Integer> imgResIds) {
-        return new AdapterUtil().adapter(context, viewPager, imgResIds);
+        return AdapterUtil.create().adapter(context, viewPager, imgResIds);
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return AdapterUtil.create().getLinearLayoutManager();
     }
 
     /**
