@@ -3,11 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XUtils.iml" filepath="$PROJECT_DIR$/XUtils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/XUtils.iml" filepath="$PROJECT_DIR$/XUtils.iml" />
       <module fileurl="file://$PROJECT_DIR$/XUtilsLibrary/XUtilsLibrary.iml" filepath="$PROJECT_DIR$/XUtilsLibrary/XUtilsLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/XUtilsLibrary/XUtilsLibrary.iml" filepath="$PROJECT_DIR$/XUtilsLibrary/XUtilsLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Xutils.iml" filepath="$PROJECT_DIR$/Xutils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -30,9 +30,13 @@ public class AdapterUtil {
     private static AdapterUtil adapterUtil;
 
 
-    public static AdapterUtil create() {
+    private AdapterUtil(Context context) {
+        layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+    }
+
+    public static AdapterUtil create(Context context) {
         if (adapterUtil == null) {
-            adapterUtil = new AdapterUtil();
+            adapterUtil = new AdapterUtil(context);
         }
         return adapterUtil;
     }
@@ -67,7 +71,6 @@ public class AdapterUtil {
                 listener.convert(holder, t, position);
             }
         };
-        layout = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(commonAdapter);
         return commonAdapter;

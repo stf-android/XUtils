@@ -3,13 +3,19 @@ package com.allens.xutilsdemo.Activity.BaseAdapterAct;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.allens.library.XUtils;
+import com.allens.library.adapter.OnAdapterListener;
 import com.allens.xutilsdemo.R;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +27,7 @@ import butterknife.ButterKnife;
 public class AdapterAct extends AppCompatActivity {
 
     @BindView(R.id.activity_adapter_ListView)
-    ListView activityAdapterListView;
+    RecyclerView activityAdapterListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,5 +55,20 @@ public class AdapterAct extends AppCompatActivity {
 //                });
 //            }
 //        });
+
+        XUtils.create()
+                .adapter(this, R.layout.item_text, users, activityAdapterListView, new OnAdapterListener.OnRvListener<User>() {
+                    @Override
+                    public void convert(ViewHolder viewHolder, User item, int position) {
+                        viewHolder.setText(R.id.item_text, item.name);
+                    }
+                });
+
+
+        RecyclerView.LayoutManager layoutManager = XUtils.create()
+                .getLayoutManager();
+        Log.e("TAG", "LAYOUT-------->" + layoutManager);
+
+
     }
 }
