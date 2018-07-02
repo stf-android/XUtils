@@ -33,7 +33,7 @@
 ```
 
 	dependencies {
-	        compile 'com.github.JiangHaiYang01:XUtils:0.8'
+	        compile 'com.github.stf-android:XUtils:2.1.3'
 	}
 ```
 
